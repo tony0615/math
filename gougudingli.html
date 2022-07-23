@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+<title>Pythagorean number</title>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+</head>
+<body>
+<div>
+  <div><input type="number" id="seed" placeholder="输入一个正整数种子"><input type="button" value="开始计算" onclick="start()"></div>
+  <div id="result"></div>
+</div>
+<script>
+  function start(){
+    let max=$("#speed").val();
+    for(let i=2;i<max;i++){
+      for(let n=1;n<i-1;n++){
+        $("#result).append("<div>"+(i*i-n*n)+"、"+(2*i*n)+"、"+(i*i+n*n)+"</div>");
+      }
+    }
+  }
+</script>
+</body>
+<html>
