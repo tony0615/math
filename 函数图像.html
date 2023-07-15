@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Function Drawing Tool</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+
+        .flex {
+            display: flex;
+        }
+        #functionexpression {
+            display: inline-flex;
+            place-items: center;
+        }
+        .frac{
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        .split {
+            width: 100%;
+            height: 2px;
+            background-color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Function Drawing Tool</h1>
+    <div class="flex">
+        <div>
+            <label for="function-select">选择函数种类:</label>
+            <select id="function-select">
+                <option value="linear">=请选择=</option>
+                <option value="linear">一次函数</option>
+                <option value="proportional">正比例函数</option>
+                <option value="inverse-proportional">反比例函数</option>
+                <option value="quadratic">一元二次函数</option>
+                <option value="exponential">指数函数</option>
+                <option value="logarithmic">对数函数</option>
+                <option value="power">幂函数</option>
+                <option value="sine">正弦函数</option>
+                <option value="cosine">余弦函数</option>
+                <option value="tangent">正切函数</option>
+                <option value="trigonometric">Trigonometric Functions</option>
+                <option value="general-sine-cosine">普通正弦和余弦函数</option>
+                <option value="step">对号函数</option>
+                <option value="custom">自定义函数</option>
+                <option value="piecewise">分段函数</option>
+            </select>
+
+            <br>
+            <div id="functionexpression"></div>
+        </div>
+        <div id="parameter-inputs"></div>
+        <button id="draw-button">绘制</button>
+    </div>
+    <div style="position: relative;">
+    <canvas id="canvas" width="800" height="800"></canvas>
+    <div style="position: absolute;">
+        <input type="number" id="xscale" onkeyup="resetscalex()" value="20" />
+        
+        <input type="number" id="yscale" onkeyup="resetscaley()" value="20" />
+    </div>
+    </div>
+
+    <script src="functionimage.js"></script>
+</body>
+
+</html>

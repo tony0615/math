@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>数学小程序</title>
+    <style>
+        /* 在这里添加你的CSS样式 */
+        .app {
+            max-width: 640px;
+            margin: 0.8rem auto;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flexmiddle {
+            display: flex;
+            place-items: center;
+            align-items: center;
+            background: #efe;
+        }
+
+        #question {
+            display: flex;
+            align-items: center
+        }
+
+        .symbol {
+            padding: 0 0.1rem;
+        }
+
+        .bracket {
+            padding: 0 0.1rem;
+            letter-spacing: 0.1rem;
+        }
+
+        .frac,
+        .fracpanel {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+
+        }
+
+        .fracpanel>input,
+        .numberpanel>input {
+            text-align: center;
+            font-size: 1.2rem;
+            border: none;
+            margin: 6px;
+            padding: 8px;
+        }
+
+        .split {
+            width: 100%;
+            height: 2px;
+            background-color: #000;
+        }
+
+        .signpanel {
+            display: flex;
+        }
+
+        .signpanel>div {
+            padding: 1rem;
+            margin: 1rem;
+            cursor: pointer;
+            font-size: 4rem;
+            border: 1px solid #333;
+            background-color: #aaa;
+        }
+
+        #myresult {
+            display: flex;
+            font-size: 1.1rem;
+        }
+
+        #step2 {
+            margin-top: 1rem;
+        }
+
+        .statuspanel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .status {
+            padding: 0.8rem 0.4rem;
+            border: 1px solid #333;
+            background-color: #aaa;
+            cursor: pointer;
+        }
+
+        .status.selected {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .resultpanel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+            background-color: #efefee;
+        }
+
+        .resultpanel button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border: none;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .rightorwrong {
+            font-size: 2rem;
+            color: red;
+            font-weight: bold;
+            padding: 0 0.3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <h1>有理数运算</h1>
+
+        <div>
+            <label for="operation">选择运算类型:</label>
+            <select id="operation" onchange="start()">
+                <option value="">=请选择=</option>
+                <option value="addition">加法</option>
+                <option value="subtraction">减法</option>
+                <option value="mixedAddSub">加减混合运算</option>
+                <option value="multiplication">乘法</option>
+                <option value="division">除法</option>
+                <option value="exponentiation">乘方</option>
+                <option value="mixedMulDiv">乘除混合运算</option>
+                <option value="mixedAll">加减乘除混合运算</option>
+            </select>
+        </div>
+
+        <div>
+            <h2 class="flexmiddle">
+                <div id="question"></div>
+                <div class="bracket">=</div>
+                <div class="flexmiddle">
+                    <div id="mysign"></div>
+                    <div id="myanswer"></div>
+                </div>
+                <div id="right" class="rightorwrong hide">✓</div>
+                <div id="wrong" class="rightorwrong hide">×</div>
+                <div id="rightresult" class="hide"></div>
+                <div style="padding-left: 1rem;flex: 1; text-align: right;"><button
+                        onclick="generateQuestion()">下一题</button></div>
+            </h2>
+            <div id="step1">
+                <h5 style="margin: 0; padding: 0.4rem 0;">第一步：(判断正负号)</h5>
+                <div class="signpanel">
+                    <div onclick="myanswer('+')">+</div>
+                    <div onclick="myanswer('-')">-</div>
+                </div>
+            </div>
+            <div id="step2" class="hide">
+                <h5>第二步：(计算最终得数)</h5>
+                <div class="flex">
+                    <div class="statuspanel">
+                        <div class="status selected" id="status0" onclick="selectStatus(0)">分数</div>
+                        <div class="status" id="status1" onclick="selectStatus(1)">小数或整数</div>
+                    </div>
+                    <div class="resultpanel">
+                        <div class="fracpanel"><input type="number" id="fracresult1" placeholder="这里输入分子"
+                                onkeyup="setanser(0)" />
+                            <div class="split"></div><input type="number" id="fracresult2" placeholder="这里输入分母"
+                                onkeyup="setanser(0)" />
+                        </div>
+                        <div class="numberpanel hide"><input type="number" id="numresult" placeholder="这里输入结果（不带正负号）"
+                                onkeyup="setanser(1)" /></div>
+                    </div>
+                    <button onclick="checkAnswer()">提交答案</button>
+                </div>
+            </div>
+            <p id="result">
+                时间：<span id="mysecond">0</span>秒；答题：<span id="myquestion">0</span>道；正确率：<span
+                    id="correctpercent">0</span>%
+            </p>
+
+        </div>
+    </div>
+    <script>
+        // 获取DOM元素
+        const operationSelect = document.getElementById("operation");
+        const questionElement = document.getElementById("question");
+        const mysign = document.getElementById("mysign");
+        const answerElement = document.getElementById("myanswer");
+        const answerRight = document.getElementById("right");
+        const answerWrong = document.getElementById("wrong");
+        const mysecond = document.getElementById("mysecond");
+        const myquestion = document.getElementById("myquestion");
+        const correctpercent = document.getElementById("correctpercent");
+        const tolerance = 1.0E-8;
+        var rightanswer = 0;
+        var showtype = 0;
+        var timecounter = 0, rightcounter = 0, questioncounter = 0;
+        // 监听提交答案按钮的点击事件
+        function checkAnswer() {
+            const selectedStatus = document.querySelector(".statuspanel .status.selected");
+            let answer;
+            if (selectedStatus.textContent === "分数") {
+                const numerator = document.getElementById("fracresult1").value;
+                const denominator = document.getElementById("fracresult2").value;
+                answer = numerator / denominator;
+            } else {
+                answer = document.getElementById("numresult").value;
+            }
+            if (isNaN(answer)) {
+                answerElement.textContent = "请输入有效的答案";
+                return;
+            }
+            if (mysign.textContent == "-") answer = answer * -1;
+            const result = evaluateAnswer(answer);
+            if (evaluateAnswer(answer)) {
+                answerRight.style.display = 'block';
+                answerWrong.style.display = 'none';
+                rightcounter++;
+
+                setTimeout(() => {
+                    generateQuestion();
+                }, 300);
+            } else {
+                answerRight.style.display = 'none';
+                answerWrong.style.display = 'block';
+                document.getElementById("rightresult").style.display = 'block';
+            }
+            correctpercent.textContent = Math.round((rightcounter / questioncounter) * 10000) / 100;
+        }
+
+        // 生成题目
+        function generateQuestion() {
+
+            document.getElementById("step1").style.display = "block";
+            document.getElementById("step2").style.display = "none";
+            document.getElementById("rightresult").style.display = "none";
+            mysign.innerHTML = '';
+            answerElement.innerHTML = '';
+            answerRight.style.display = 'none';
+            answerWrong.style.display = 'none';
+            document.getElementById("fracresult1").value = '';
+            document.getElementById("fracresult2").value = '';
+            document.getElementById("numresult").value = '';
+
+
+            const operation = operationSelect.value;
+            if (operation == '') return;
+            questioncounter++;
+            myquestion.textContent = questioncounter;
+            showtype = Math.random();
+            let num = [], factor, temp = '';
+            factor = Math.random() < 0.1 ? 4 : (Math.random() < 0.4 ? 3 : 2);//先随机计算的长度
+
+            switch (operation) {
+                case "addition":
+                    rightanswer = 0;
+                    if (showtype < 0.1 || showtype > 0.4) {
+                        for (let i = 0; i < factor; i++) {
+                            let num = generateNumber(-15, 15);
+                            if (num < 0) {
+                                temp += '<span class="bracket">(</span><span class="number">' + num + '</span><span class="bracket">)</span>';
+                            } else {
+                                temp += '<span class="number">' + num + '</span>';
+                            }
+                            if (i + 1 < factor) temp += '<span class="symbol">+</span>';
+                            rightanswer += num * 1000;
+                        }
+                        rightanswer = rightanswer / 1000;
+                    } else {
+                        factor = factor > 3 ? 2 : factor;
+                        for (let i = 0; i < factor; i++) {
+                            if (Math.random() < 0.1) {
+                                let num1 = generateNumber(-5, 5);
+                                if (num1 < 0) {
+                                    temp += '<span class="bracket">(</span><span class="number">' + num1 + '</span><span class="bracket">)</span>';
+                                } else {
+                                    temp += '<span class="number">' + num1 + '</span>';
+                                }
+                                rightanswer += num1;
+                            } else {
+                                let num1 = generateNumber(1, 5);
+                                let num2 = generateNumber(2, 6);
+                                if (isgy(num1, num2) > 1) num2++//如果两个数可以约分让分母+1
+                                if (Math.random() < 0.5) {
+                                    temp += '<span class="frac"><div class="frac1">' + num1
+                                        + '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span>';
+                                    rightanswer += (num1 / num2);
+                                } else {
+                                    temp += '<span class="bracket">(-</span><span class="frac"><div class="frac1">' + num1 +
+                                        '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span><span class="bracket">)</span>';
+                                    rightanswer += (-num1 / num2);
+                                }
+                            }
+                            if (i + 1 < factor) temp += '<span class="symbol">+</span>';
+                        }
+                    }
+                    questionElement.innerHTML = temp;
+                    document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
+                    break;
+                case "subtraction":
+                    rightanswer = 0;
+                    if (showtype < 0.1 || showtype > 0.4) {
+                        for (let i = 0; i < factor; i++) {
+                            let num = generateNumber(-15, 15);
+                            if (num < 0) {
+                                temp += '<span class="bracket">(</span><span class="number">' + num + '</span><span class="bracket">)</span>';
+                            } else {
+                                temp += '<span class="number">' + num + '</span>';
+                            }
+                            if (i + 1 < factor) temp += '<span class="symbol">-</span>';
+                            if (i === 0) {
+                                rightanswer = num * 1000;
+                            } else {
+                                rightanswer -= num * 1000;
+                            }
+                        }
+                        rightanswer = rightanswer / 1000;
+                    } else {
+                        factor = factor > 3 ? 2 : factor;
+                        for (let i = 0; i < factor; i++) {
+                            if (Math.random() < 0.1) {
+                                let num1 = generateNumber(-5, 5);
+                                if (num1 < 0) {
+                                    temp += '<span class="bracket">(</span><span class="number">' + num1 + '</span><span class="bracket">)</span>';
+                                } else {
+                                    temp += '<span class="number">' + num1 + '</span>';
+                                }
+                                rightanswer += num1;
+                            } else {
+                                let num1 = generateNumber(1, 5);
+                                let num2 = generateNumber(2, 6);
+                                if (isgy(num1, num2) > 1) num2++//如果两个数可以约分让分母+1
+                                if (Math.random() < 0.5) { //随机出现正的分数
+                                    temp += '<span class="frac"><div class="frac1">' + num1
+                                        + '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span>';
+                                    rightanswer += (num1 / num2);
+                                } else { //出现负的分数
+                                    temp += '<span class="bracket">(-</span><span class="frac"><div class="frac1">' + num1 +
+                                        '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span><span class="bracket">)</span>';
+                                    rightanswer += (-num1 / num2);
+                                }
+                            }
+                            if (i + 1 < factor) temp += '<span class="symbol">-</span>';
+                        }
+                    }
+                    questionElement.innerHTML = temp;
+                    document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
+                    break;
+                case "mixedAddSub":
+                    rightanswer = 0;
+                    if(factor<3)factor++; //混合运算长度+1
+                    if (showtype < 0.1 || showtype > 0.4) {
+                        let tempsymbol = Math.random();
+                        for (let i = 0; i < factor; i++) {
+                            let num = generateNumber(-15, 15);
+                            if (num < 0) {
+                                temp += '<span class="bracket">(</span><span class="number">' + num + '</span><span class="bracket">)</span>';
+                            } else {
+                                temp += '<span class="number">' + num + '</span>';
+                            }
+                            if (i === 0) {
+                                rightanswer = num * 1000;
+                            } else {
+                                if(tempsymbol>0.5){
+                                    rightanswer += num * 1000;
+                                }else{
+                                    rightanswer -= num * 1000;
+                                }
+                            }
+                            if (i + 1 < factor) {
+                                tempsymbol = Math.random();
+                                temp += '<span class="symbol">'+(tempsymbol>0.5?'+':'-')+'</span>';
+                            }
+                        }
+                        rightanswer = rightanswer / 1000;
+                    } else {
+                        let tempsymbol = Math.random();
+                        for (let i = 0; i < factor; i++) {
+                            if (Math.random() < 0.1) {
+                                let num1 = generateNumber(-5, 5);
+                                if (num1 < 0) {
+                                    temp += '<span class="bracket">(</span><span class="number">' + num1 + '</span><span class="bracket">)</span>';
+                                } else {
+                                    temp += '<span class="number">' + num1 + '</span>';
+                                }
+                                if (i === 0) {
+                                    rightanswer = num1 ;
+                                } else {
+                                    if(tempsymbol>0.5){
+                                        rightanswer += num1 ;
+                                    }else{
+                                        rightanswer -= num1 ;
+                                    }
+                                }
+                            } else {
+                                let num1 = generateNumber(1, 5);
+                                let num2 = generateNumber(2, 6);
+                                if (isgy(num1, num2) > 1) num2++//如果两个数可以约分让分母+1
+                                if (Math.random() < 0.5) { //随机出现正的分数
+                                    temp += '<span class="frac"><div class="frac1">' + num1
+                                        + '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span>';
+                                    if (i === 0) {
+                                        rightanswer = (num1 / num2);
+                                    } else {
+                                        if(tempsymbol>0.5){
+                                            rightanswer += (num1 / num2) ;
+                                        }else{
+                                            rightanswer -= (num1 / num2) ;
+                                        }
+                                    }
+                                } else { //出现负的分数
+                                    temp += '<span class="bracket">(-</span><span class="frac"><div class="frac1">' + num1 +
+                                        '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span><span class="bracket">)</span>';
+                                    if (i === 0) {
+                                        rightanswer = (-num1 / num2);
+                                    } else {
+                                        if(tempsymbol>0.5){
+                                            rightanswer -= (num1 / num2) ;
+                                        }else{
+                                            rightanswer += (num1 / num2) ;
+                                        }
+                                    }
+                                }
+                            }
+                            if (i + 1 < factor) {
+                                tempsymbol = Math.random();
+                                temp += '<span class="symbol">'+(tempsymbol>0.5?'+':'-')+'</span>';
+                            }
+                        }
+                    }
+                    questionElement.innerHTML = temp;
+                    document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
+                    break;
+                case "multiplication":
+                    rightanswer = 1;
+                    if (showtype < 0.1) showtype = 0.5; //不进行小数的乘法运算
+                    if (showtype < 0.1 || showtype > 0.4) {
+                        for (let i = 0; i < factor; i++) {
+                            let num = generateNumber(-9, 9);
+                            if (num < 0) {
+                                temp += '<span class="bracket">(</span><span class="number">' + num + '</span><span class="bracket">)</span>';
+                            }else{
+                                temp += '<span class="number">' + num + '</span>';
+                            }
+                            if (i + 1 < factor) temp += '<span class="symbol">×</span>';
+                            rightanswer *= num;
+                        }
+                    } else {
+                        factor = factor > 3 ? 2 : factor;
+                        for (let i = 0; i < factor; i++) {
+                            let num1 = generateNumber(1, 5);
+                            let num2 = generateNumber(2, 6);
+                            if (isgy(num1, num2) > 1) num2++;
+                            if (Math.random() < 0.5) {
+                                temp += '<span class="frac"><div class="frac1">' + num1 +
+                                    '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span>';
+                                rightanswer *= (num1 / num2);
+                            } else {
+                                temp += '<span class="bracket">(-</span><span class="frac"><div class="frac1">' + num1 +
+                                    '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span><span class="bracket">)</span>';
+                                rightanswer *= (-num1 / num2);
+                            }
+                            if (i + 1 < factor) temp += '<span class="symbol">×</span>';
+                        }
+                    }
+                    questionElement.innerHTML = temp;
+                    document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
+                    break;
+
+                case "division":
+                    rightanswer = generateNumber(1, 10);
+                    if (showtype < 0.1) showtype = 0.5; //不进行小数的乘法运算
+                    if (showtype < 0.1 || showtype > 0.4 ) {
+                        for (let i = 0; i < factor; i++) {
+                            let num = generateNumber(1, 9);
+                            if (Math.random() < 0.5) {
+                                num = -num;
+                                temp += '<span class="bracket">(</span><span class="number">' + num + '</span><span class="bracket">)</span>';
+                            }else{
+                                temp += '<span class="number">' + num + '</span>';
+                            }
+                            if (i + 1 < factor) temp += '<span class="symbol">÷</span>';
+                            if (i === 0) {
+                                rightanswer = num;
+                            } else {
+                                rightanswer /= num;
+                            }
+                        }
+                    } else {
+                        factor = factor > 3 ? 2 : factor; // 分式最多出现3个因数
+                        for (let i = 0; i < factor; i++) {
+                            let num1 = generateNumber(1, 5);
+                            let num2 = generateNumber(2, 6);
+                            if (isgy(num1, num2) > 1) num2++;
+                            if (Math.random() < 0.5) {
+                                temp += '<span class="frac"><div class="frac1">' + num1 +
+                                    '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span>';
+                                if (i === 0) {
+                                    rightanswer = num1 / num2;
+                                } else {
+                                    rightanswer /= (num1 / num2);
+                                }
+                            } else {
+                                temp += '<span class="bracket">(-</span><span class="frac"><div class="frac1">' + num1 +
+                                    '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span><span class="bracket">)</span>';
+                                if (i === 0) {
+                                    rightanswer = -num1 / num2;
+                                } else {
+                                    rightanswer /= (-num1 / num2);
+                                }
+                            }
+                            if (i + 1 < factor) temp += '<span class="symbol">÷</span>';
+                        }
+                    }
+                    questionElement.innerHTML = temp;
+                    document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
+                    break;
+                
+                
+
+                // 其他运算类型的生成规则类似，可以根据需要进行扩展
+                default:
+                    questionElement.textContent = "请选择运算类型";
+                    break;
+            }
+        }
+        function myanswer(sign) {
+            if (sign == '-') {
+                mysign.textContent = sign;
+            } else {
+                mysign.textContent = '';
+            }
+            document.getElementById("step1").style.display = "none";
+            document.getElementById("step2").style.display = "block";
+            if (showtype < 0.1 || showtype > 0.4) {
+                selectStatus(1)
+            } else {
+                selectStatus(0)
+            }
+        }
+        function setanser(v) {
+            if (v === 0) {
+                answerElement.innerHTML = '<span class="frac"><div class="frac1">' + document.getElementById("fracresult1").value +
+                    '</div><div class="split"></div><div class="frac2">' + document.getElementById("fracresult2").value + '</div></span>';
+            } else {
+                answerElement.innerHTML = '<span class="number">' + document.getElementById("numresult").value + '</span>';
+            }
+        }
+        function selectStatus(status) {
+            const statuses = document.getElementsByClassName("status");
+            for (const statusElement of statuses) {
+                statusElement.classList.remove("selected");
+            }
+            const selectedStatus = document.getElementById("status" + status);
+            selectedStatus.classList.add("selected");
+            const fracPanel = document.querySelector(".fracpanel");
+            const numberPanel = document.querySelector(".numberpanel");
+            if (status === 0) {
+                fracPanel.style.display = "flex";
+                numberPanel.style.display = "none";
+                document.getElementById("fracresult1").focus();
+            } else {
+                fracPanel.style.display = "none";
+                numberPanel.style.display = "block";
+                document.getElementById("numresult").focus();
+            }
+        }
+        // 验证答案
+        function evaluateAnswer(answer) {
+            return Math.abs(answer - rightanswer) <= tolerance;
+        }
+
+        // 生成指定范围内的随机数
+        function generateNumber(min, max) {
+            const randomNumber = Math.random() * (max - min) + min;
+            if (showtype < 0.1) {
+                return Math.round(randomNumber * 100) / 100; // 保留两位小数
+            } else {
+                return Math.round(randomNumber)
+            }
+        }
+
+        //判断两个数是否有公约数
+        function isgy(a, b) {
+            return a % b == 0 ? b : isgy(b, a % b)
+        }
+
+        //有理数分数化
+        function decimalToFraction(decimal) {
+            if (showtype < 0.05) return decimal;
+            let decimal2 = Math.abs(decimal);
+            let numerator = 1;
+            let denominator = 1;
+            let error = decimal2 - numerator / denominator;
+            let icount = 0;
+            while (Math.abs(error) > tolerance) {
+                if (error > 0) {
+                    numerator++;
+                } else {
+                    denominator++;
+                }
+                error = decimal2 - numerator / denominator;
+                icount++;
+                if (icount > 1000) break;
+            }
+            if (denominator == 1) return decimal;
+            return '<span class="flexmiddle">' + (decimal < 0 ? '<span class="bracket">-</span>' : "") + '<span class="frac">' + '<div class="frac1">' + numerator +
+                '</div><div class="split"></div><div class="frac2">' + denominator + '</div></span>' + '<span>';
+            //return numerator + "/" + denominator;
+        }
+
+        function start() {
+            if (operationSelect.value != "") {
+                // 初始化题目
+                questioncounter = 0;
+                rightcounter = 0;
+                generateQuestion();
+                timecounter = 0;
+            }
+        }
+
+        setInterval(() => {
+            timecounter++;
+            mysecond.textContent = timecounter;
+        }, 1000);
+    </script>
+</body>
+
+</html>
