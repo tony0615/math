@@ -4,32 +4,9 @@
 <head>
     <title>数学小程序</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
     <style>
         /* 在这里添加你的CSS样式 */
-:root {
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
-
-    color-scheme: light dark;
-    color: #242424;
-    background-color: rgba(255, 255, 255, 0.87);
-
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
-    user-select: none;
-}
-html, body {
-    user-select: none;
-    font-size: 16px;
-}
-        .app {
-            max-width: 640px;
-            margin: 0.8rem auto;
-        }
 
         .flex {
             display: flex;
@@ -40,6 +17,7 @@ html, body {
             place-items: center;
             align-items: center;
             background: #efe;
+            flex-wrap: wrap;
         }
 
         #question {
@@ -47,37 +25,6 @@ html, body {
             align-items: center
         }
 
-        .symbol {
-            padding: 0 0.1rem;
-        }
-
-        .bracket {
-            padding: 0 0.1rem;
-            letter-spacing: 0.1rem;
-        }
-
-        .frac,
-        .fracpanel {
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-
-        }
-
-        .fracpanel>input,
-        .numberpanel>input {
-            text-align: center;
-            font-size: 1.2rem;
-            border: none;
-            margin: 6px;
-            padding: 8px;
-        }
-
-        .split {
-            width: 100%;
-            height: 2px;
-            background-color: #000;
-        }
 
         .signpanel {
             display: flex;
@@ -147,6 +94,7 @@ html, body {
             padding: 0 0.3rem;
         }
     </style>
+    <script src='evaluateMixedExpression.js'></script>
 </head>
 
 <body>
@@ -226,7 +174,7 @@ html, body {
         const mysecond = document.getElementById("mysecond");
         const myquestion = document.getElementById("myquestion");
         const correctpercent = document.getElementById("correctpercent");
-        const tolerance = 1.0E-8;
+        const tolerance = 1.0E-12;
         var rightanswer = 0;
         var showtype = 0;
         var timecounter = 0, rightcounter = 0, questioncounter = 0;
@@ -283,280 +231,80 @@ html, body {
             questioncounter++;
             myquestion.textContent = questioncounter;
             showtype = Math.random();
-            let num = [], factor, temp = '';
-            factor = Math.random() < 0.1 ? 4 : (Math.random() < 0.4 ? 3 : 2);//先随机计算的长度
-
+            let num = [], numTerms = 2;// numTerms项数
+            let temp = '', operators = [], expression=[], operator2='';
             switch (operation) {
                 case "addition":
-                    rightanswer = 0;
-                    if (showtype < 0.1 || showtype > 0.4) {
-                        for (let i = 0; i < factor; i++) {
-                            let num = generateNumber(-15, 15);
-                            if (num < 0) {
-                                temp += '<span class="bracket">(</span><span class="number">' + num + '</span><span class="bracket">)</span>';
-                            } else {
-                                temp += '<span class="number">' + num + '</span>';
-                            }
-                            if (i + 1 < factor) temp += '<span class="symbol">+</span>';
-                            rightanswer += num * 1000;
-                        }
-                        rightanswer = rightanswer / 1000;
-                    } else {
-                        factor = factor > 3 ? 2 : factor;
-                        for (let i = 0; i < factor; i++) {
-                            if (Math.random() < 0.1) {
-                                let num1 = generateNumber(-5, 5);
-                                if (num1 < 0) {
-                                    temp += '<span class="bracket">(</span><span class="number">' + num1 + '</span><span class="bracket">)</span>';
-                                } else {
-                                    temp += '<span class="number">' + num1 + '</span>';
-                                }
-                                rightanswer += num1;
-                            } else {
-                                let num1 = generateNumber(1, 5);
-                                let num2 = generateNumber(2, 6);
-                                if (isgy(num1, num2) > 1) num2++//如果两个数可以约分让分母+1
-                                if (Math.random() < 0.5) {
-                                    temp += '<span class="frac"><div class="frac1">' + num1
-                                        + '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span>';
-                                    rightanswer += (num1 / num2);
-                                } else {
-                                    temp += '<span class="bracket">(-</span><span class="frac"><div class="frac1">' + num1 +
-                                        '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span><span class="bracket">)</span>';
-                                    rightanswer += (-num1 / num2);
-                                }
-                            }
-                            if (i + 1 < factor) temp += '<span class="symbol">+</span>';
-                        }
-                    }
-                    questionElement.innerHTML = temp;
+                    temp = createExpression( Math.round(generateNumber(2, 3)),['+'])
+                    questionElement.innerHTML = temp.code;
+                    rightanswer = temp.value;
                     document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
                     break;
                 case "subtraction":
-                    rightanswer = 0;
-                    if (showtype < 0.1 || showtype > 0.4) {
-                        for (let i = 0; i < factor; i++) {
-                            let num = generateNumber(-15, 15);
-                            if (num < 0) {
-                                temp += '<span class="bracket">(</span><span class="number">' + num + '</span><span class="bracket">)</span>';
-                            } else {
-                                temp += '<span class="number">' + num + '</span>';
-                            }
-                            if (i + 1 < factor) temp += '<span class="symbol">-</span>';
-                            if (i === 0) {
-                                rightanswer = num * 1000;
-                            } else {
-                                rightanswer -= num * 1000;
-                            }
-                        }
-                        rightanswer = rightanswer / 1000;
-                    } else {
-                        factor = factor > 3 ? 2 : factor;
-                        for (let i = 0; i < factor; i++) {
-                            if (Math.random() < 0.1) {
-                                let num1 = generateNumber(-5, 5);
-                                if (num1 < 0) {
-                                    temp += '<span class="bracket">(</span><span class="number">' + num1 + '</span><span class="bracket">)</span>';
-                                } else {
-                                    temp += '<span class="number">' + num1 + '</span>';
-                                }
-                                rightanswer += num1;
-                            } else {
-                                let num1 = generateNumber(1, 5);
-                                let num2 = generateNumber(2, 6);
-                                if (isgy(num1, num2) > 1) num2++//如果两个数可以约分让分母+1
-                                if (Math.random() < 0.5) { //随机出现正的分数
-                                    temp += '<span class="frac"><div class="frac1">' + num1
-                                        + '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span>';
-                                    rightanswer += (num1 / num2);
-                                } else { //出现负的分数
-                                    temp += '<span class="bracket">(-</span><span class="frac"><div class="frac1">' + num1 +
-                                        '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span><span class="bracket">)</span>';
-                                    rightanswer += (-num1 / num2);
-                                }
-                            }
-                            if (i + 1 < factor) temp += '<span class="symbol">-</span>';
-                        }
-                    }
-                    questionElement.innerHTML = temp;
+                    temp = createExpression(Math.round(generateNumber(2, 3)),['-'])
+                    questionElement.innerHTML = temp.code;
+                    rightanswer = temp.value;
                     document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
                     break;
                 case "mixedAddSub":
-                    rightanswer = 0;
-                    if(factor<3)factor++; //混合运算长度+1
-                    if (showtype < 0.1 || showtype > 0.4) {
-                        let tempsymbol = Math.random();
-                        for (let i = 0; i < factor; i++) {
-                            let num = generateNumber(-15, 15);
-                            if (num < 0) {
-                                temp += '<span class="bracket">(</span><span class="number">' + num + '</span><span class="bracket">)</span>';
-                            } else {
-                                temp += '<span class="number">' + num + '</span>';
-                            }
-                            if (i === 0) {
-                                rightanswer = num * 1000;
-                            } else {
-                                if(tempsymbol>0.5){
-                                    rightanswer += num * 1000;
-                                }else{
-                                    rightanswer -= num * 1000;
-                                }
-                            }
-                            if (i + 1 < factor) {
-                                tempsymbol = Math.random();
-                                temp += '<span class="symbol">'+(tempsymbol>0.5?'+':'-')+'</span>';
-                            }
-                        }
-                        rightanswer = rightanswer / 1000;
-                    } else {
-                        let tempsymbol = Math.random();
-                        for (let i = 0; i < factor; i++) {
-                            if (Math.random() < 0.1) {
-                                let num1 = generateNumber(-5, 5);
-                                if (num1 < 0) {
-                                    temp += '<span class="bracket">(</span><span class="number">' + num1 + '</span><span class="bracket">)</span>';
-                                } else {
-                                    temp += '<span class="number">' + num1 + '</span>';
-                                }
-                                if (i === 0) {
-                                    rightanswer = num1 ;
-                                } else {
-                                    if(tempsymbol>0.5){
-                                        rightanswer += num1 ;
-                                    }else{
-                                        rightanswer -= num1 ;
-                                    }
-                                }
-                            } else {
-                                let num1 = generateNumber(1, 5);
-                                let num2 = generateNumber(2, 6);
-                                if (isgy(num1, num2) > 1) num2++//如果两个数可以约分让分母+1
-                                if (Math.random() < 0.5) { //随机出现正的分数
-                                    temp += '<span class="frac"><div class="frac1">' + num1
-                                        + '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span>';
-                                    if (i === 0) {
-                                        rightanswer = (num1 / num2);
-                                    } else {
-                                        if(tempsymbol>0.5){
-                                            rightanswer += (num1 / num2) ;
-                                        }else{
-                                            rightanswer -= (num1 / num2) ;
-                                        }
-                                    }
-                                } else { //出现负的分数
-                                    temp += '<span class="bracket">(-</span><span class="frac"><div class="frac1">' + num1 +
-                                        '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span><span class="bracket">)</span>';
-                                    if (i === 0) {
-                                        rightanswer = (-num1 / num2);
-                                    } else {
-                                        if(tempsymbol>0.5){
-                                            rightanswer -= (num1 / num2) ;
-                                        }else{
-                                            rightanswer += (num1 / num2) ;
-                                        }
-                                    }
-                                }
-                            }
-                            if (i + 1 < factor) {
-                                tempsymbol = Math.random();
-                                temp += '<span class="symbol">'+(tempsymbol>0.5?'+':'-')+'</span>';
-                            }
-                        }
-                    }
-                    questionElement.innerHTML = temp;
+                    temp = createExpression(Math.round(generateNumber(2, 4)),['-','+']) 
+                    questionElement.innerHTML = temp.code;
+                    rightanswer = temp.value;
                     document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
                     break;
                 case "multiplication":
-                    rightanswer = 1;
-                    if (showtype < 0.1) showtype = 0.5; //不进行小数的乘法运算
-                    if (showtype < 0.1 || showtype > 0.4) {
-                        for (let i = 0; i < factor; i++) {
-                            let num = generateNumber(-9, 9);
-                            if (num < 0) {
-                                temp += '<span class="bracket">(</span><span class="number">' + num + '</span><span class="bracket">)</span>';
-                            }else{
-                                temp += '<span class="number">' + num + '</span>';
-                            }
-                            if (i + 1 < factor) temp += '<span class="symbol">×</span>';
-                            rightanswer *= num;
-                        }
-                    } else {
-                        factor = factor > 3 ? 2 : factor;
-                        for (let i = 0; i < factor; i++) {
-                            let num1 = generateNumber(1, 5);
-                            let num2 = generateNumber(2, 6);
-                            if (isgy(num1, num2) > 1) num2++;
-                            if (Math.random() < 0.5) {
-                                temp += '<span class="frac"><div class="frac1">' + num1 +
-                                    '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span>';
-                                rightanswer *= (num1 / num2);
-                            } else {
-                                temp += '<span class="bracket">(-</span><span class="frac"><div class="frac1">' + num1 +
-                                    '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span><span class="bracket">)</span>';
-                                rightanswer *= (-num1 / num2);
-                            }
-                            if (i + 1 < factor) temp += '<span class="symbol">×</span>';
-                        }
-                    }
-                    questionElement.innerHTML = temp;
+                    temp = createExpression(Math.round(generateNumber(2, 3)),['×']) 
+                    questionElement.innerHTML = temp.code;
+                    rightanswer = temp.value;
                     document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
                     break;
-
                 case "division":
-                    rightanswer = generateNumber(1, 10);
-                    if (showtype < 0.1) showtype = 0.5; //不进行小数的乘法运算
-                    if (showtype < 0.1 || showtype > 0.4 ) {
-                        for (let i = 0; i < factor; i++) {
-                            let num = generateNumber(1, 9);
-                            if (Math.random() < 0.5) {
-                                num = -num;
-                                temp += '<span class="bracket">(</span><span class="number">' + num + '</span><span class="bracket">)</span>';
-                            }else{
-                                temp += '<span class="number">' + num + '</span>';
-                            }
-                            if (i + 1 < factor) temp += '<span class="symbol">÷</span>';
-                            if (i === 0) {
-                                rightanswer = num;
-                            } else {
-                                rightanswer /= num;
-                            }
-                        }
-                    } else {
-                        factor = factor > 3 ? 2 : factor; // 分式最多出现3个因数
-                        for (let i = 0; i < factor; i++) {
-                            let num1 = generateNumber(1, 5);
-                            let num2 = generateNumber(2, 6);
-                            if (isgy(num1, num2) > 1) num2++;
-                            if (Math.random() < 0.5) {
-                                temp += '<span class="frac"><div class="frac1">' + num1 +
-                                    '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span>';
-                                if (i === 0) {
-                                    rightanswer = num1 / num2;
-                                } else {
-                                    rightanswer /= (num1 / num2);
-                                }
-                            } else {
-                                temp += '<span class="bracket">(-</span><span class="frac"><div class="frac1">' + num1 +
-                                    '</div><div class="split"></div><div class="frac2">' + num2 + '</div></span><span class="bracket">)</span>';
-                                if (i === 0) {
-                                    rightanswer = -num1 / num2;
-                                } else {
-                                    rightanswer /= (-num1 / num2);
-                                }
-                            }
-                            if (i + 1 < factor) temp += '<span class="symbol">÷</span>';
-                        }
-                    }
-                    questionElement.innerHTML = temp;
+                    temp = createExpression(Math.round(generateNumber(2, 3)),['÷']) 
+                    questionElement.innerHTML = temp.code;
+                    rightanswer = temp.value;
                     document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
                     break;
-                
-                
+                case "mixedMulDiv":
+                    temp = createExpression(Math.round(generateNumber(2, 3)),['×','÷']) 
+                    questionElement.innerHTML = temp.code;
+                    rightanswer = temp.value;
+                    document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
+                    break;
+                case "exponentiation":
+                    temp = createExponent() 
+                    questionElement.innerHTML = temp.code;
+                    rightanswer = temp.value;
+                    document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
+                    break;
 
-                // 其他运算类型的生成规则类似，可以根据需要进行扩展
+                case "mixedAll":
+                    temp = createExpression(Math.round(generateNumber(2, 4)),['+','-','×','÷']) 
+                    questionElement.innerHTML = temp.code;
+                    rightanswer = temp.value;
+                    document.getElementById('rightresult').innerHTML = decimalToFraction(rightanswer);
+                    break;
                 default:
                     questionElement.textContent = "请选择运算类型";
                     break;
+            }
+        }
+        function getoperator(operators) {
+            let num = Math.round(generateNumber(0, operators.length - 1));
+            return operators[num];
+        }
+        
+
+        function evaluateTerm(term) {
+            if (typeof term === 'number') {
+                return term;
+            } else if (term.includes('/')) {
+                let [numerator, denominator] = term.slice(1, -1).split('/');
+                return numerator / denominator;
+            } else {
+                let operator = term.charAt(1);
+                let subTerm = term.slice(2, -1);
+                let subTermResult = evaluateTerm(subTerm);
+                return operator === '+' ? subTermResult : -subTermResult;
             }
         }
         function myanswer(sign) {
@@ -567,7 +315,7 @@ html, body {
             }
             document.getElementById("step1").style.display = "none";
             document.getElementById("step2").style.display = "block";
-            if (showtype < 0.1 || showtype > 0.4) {
+            if (Math.abs(rightanswer - Math.round(rightanswer))<tolerance) {
                 selectStatus(1)
             } else {
                 selectStatus(0)
@@ -609,7 +357,7 @@ html, body {
         function generateNumber(min, max) {
             const randomNumber = Math.random() * (max - min) + min;
             if (showtype < 0.1) {
-                return Math.round(randomNumber * 100) / 100; // 保留两位小数
+                return Math.round(randomNumber * 10) / 10; // 保留1位小数
             } else {
                 return Math.round(randomNumber)
             }
