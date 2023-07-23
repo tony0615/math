@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>因式分解</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .container {
+            width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .question {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .step {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+    <script src="multiplyPolynomials.js?v=1"></script>
+    <script src="myMath.js?v=1.2"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="question" id="question"></div>
+        <div class="step" id="step"></div>
+        <button class="button" onclick="nextStep()">下一步</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        var question = document.getElementById('question');
+        var step = document.getElementById('step');
+        var result = document.getElementById('result');
+        var currentStep = 0;
+        var polynomial;
+
+
+        
+        // 随机生成多项式
+        function generatePolynomial() {
+            var variables = ['x', 'y', 'a', 'b']; // 可以根据需要添加更多变量
+            let temp = Math.random();
+            if (temp < 0.3) {
+                variables = ['x', 'y'];
+            } else if (temp < 0.5) {
+                variables = ['m', 'n']
+            } else if (temp < 0.7) {
+                variables = ['a', 'b']
+            } else if (temp < 0.9) {
+                variables = ['x']
+            } else {
+                variables = ['x', 'y', 'z']
+            }
+            //createMonomial()
+            var polynomial = '';
+            function getvariable(availableVariables) {
+                var tempVariables = availableVariables || variables;
+                if (tempVariables.length > 0) {
+
+                    return tempVariables[Math.floor(Math.random() * (tempVariables.length))];
+                } else {
+                    return ''
+                }
+            }
+            function newPolynomial() {
+                // 生成因式b
+                var factorBCount = Math.floor(Math.random() * 2) + 2; // 随机选择2或3个因式b
+                var polynomialB = '';
+                var selectedVariables = []; // 存储已选择的变量
+                var availableVariables = [...variables]; // 创建可选变量的副本数组
+                for (var i = 0; i < factorBCount; i++) {
+                    var coefficient = Math.floor(Math.random() * 3) + 1; // 生成1到3之间的整数系数，数值越小出现的概率越大
+                    var variable = getvariable(availableVariables);
+                    // 如果变量已经被选择过，则将其从可选变量列表中移除
+                    var variableIndex = availableVariables.indexOf(variable);
+                    if (variableIndex !== -1) {
+                        availableVariables.splice(variableIndex, 1);
+                        selectedVariables.push(variable);
+                    }
+                    if (variable == '') {
+                        polynomialB += '1';
+                    } else {
+                        polynomialB += `${coefficient === 1 ? '' : coefficient}${variable}`;
+                    }
+
+                    if (i < factorBCount - 1) {
+                        polynomialB += Math.random() < 0.5 ? ' + ' : ' - '; // 以50%的概率添加加号或减号
+                    }
+                }
+                return polynomialB;
+            }
+            // 生成因式a
+            var includeA = Math.random() > 0.8; // 20%的概率不包含因式a
+            let polynomialA = '';
+            if (includeA) {
+                var factorType = Math.floor(Math.random() * 2); // 随机选择因式a的类型
+
+                if (factorType < 2) {
+                    // 一个字母乘积或一个字母与整数乘积
+                    var variable = getvariable();
+                    var coefficient = Math.floor(Math.random() * 3) + 1; // 生成1到3之间的整数系数
+                    polynomialA = coefficient === 1 ? `${coefficient}${variable}` : variable;
+                } else {
+                    // 两个字母乘积
+                    var variable1 = getvariable();
+                    var variable2 = getvariable();
+                    polynomialA = `${variable1}${variable2}`;
+                }
+                console.log('a:', polynomialA)
+            }
+
+
+            // 生成因式b
+            var polynomialB = newPolynomial();
+            console.log('b:', polynomialB);
+
+
+            // 生成因式c
+            let polynomialC = '';
+            if (includeA) {
+                var includeC = Math.random() < 0.7; // 70%的概率包含因式c
+                if (includeC) {
+                    var factorCType = Math.floor(Math.random() * 3); // 随机选择因式c的类型
+
+                    if (factorCType === 0) {
+                        // 类似因式b
+                        polynomialC = newPolynomial();
+                    } else if (factorCType === 1) {
+                        // 与因式b相同
+                        polynomialC = polynomialB;
+                    } else {
+                        // 平方差
+                        var variable1 = getvariable();
+                        var variable2 = getvariable();
+                        polynomialC += `(${variable1} - ${variable2})^2`;
+                    }
+                }
+            } else {
+                // 因式a不出现时，必须出现因式c
+                polynomialC = newPolynomial();
+            }
+            console.log('c:', polynomialC, variables)
+
+            return `${polynomialA}(${simplifyExpression(polynomialB)})(${simplifyExpression(polynomialC)})`;
+        }
+
+
+        //合并同类项
+        function simplifyExpression(expression) {
+            // 去除空格
+            expression = expression.replace(/\s/g, '');
+
+            var terms = [];
+            var term = '';
+            var termMap = {};
+            // 按加减号拆分成数组
+            for (var i = 0; i < expression.length; i++) {
+                var char = expression[i];
+                if (char === '+' || char === '-') {
+                    if (term !== '') {
+                        terms.push(term);
+                    }
+                    term = char;
+                } else {
+                    term += char;
+                }
+            }
+
+            // 添加最后一个项
+            if (term !== '') {
+                terms.push(term);
+            }
+
+            for (var i = 0; i < terms.length; i++) {
+                var term = terms[i];
+                var coefficient = 1;
+                var variable = '';
+                var exponent = 1;
+                var variableExponents = [];
+
+                // 提取系数
+                var coefficientMatch = term.match(/^([+\-]?\d+)/);
+                if (coefficientMatch !== null) {
+                    coefficient = parseInt(coefficientMatch[1]);
+                    term = term.slice(coefficientMatch[1].length);
+                } else {
+                    if (term[i] === '-') {
+                        coefficient = -1;
+                        term = term.slice(1);
+                    }
+                }
+
+                // 提取变量和指数
+                var variableMatch = term.match(/[a-z](\^\d+)?/gi);
+                if (variableMatch !== null) {
+                    for (var j = 0; j < variableMatch.length; j++) {
+                        var variableExp = variableMatch[j];
+                        var variable = '';
+                        var exponent = 1;
+
+                        // 提取变量
+                        var variableOnlyMatch = variableExp.match(/[a-z]/i);
+                        if (variableOnlyMatch !== null) {
+                            variable = variableOnlyMatch[0];
+                        }
+
+                        // 提取指数
+                        var exponentMatch = variableExp.match(/\^(\d+)/);
+                        if (exponentMatch !== null) {
+                            exponent = parseInt(exponentMatch[1]);
+                        }
+
+                        variableExponents.push({
+                            variable: variable,
+                            exponent: exponent,
+                        });
+                    }
+                } else {
+                    for (var j = 0; j < term.length; j++) {
+                        variableExponents.push({
+                            variable: term[i],
+                            exponent: 1,
+                        });
+                    }
+                }
+
+                // 排列变量和指数
+                variableExponents.sort(function (a, b) {
+                    if (a.variable < b.variable) {
+                        return -1;
+                    }
+                    if (a.variable > b.variable) {
+                        return 1;
+                    }
+                    return 0;
+                });
+
+                // 组合变量和指数
+                var key = '';
+                for (var j = 0; j < variableExponents.length; j++) {
+                    if (variableExponents[j].exponent > 1) {
+                        key += variableExponents[j].variable + '^' + variableExponents[j].exponent;
+                    } else {
+                        key += variableExponents[j].variable;
+                    }
+                }
+
+                // 判断是否为同类项并合并系数
+                if (termMap.hasOwnProperty(key)) {
+                    termMap[key] += coefficient;
+                } else {
+                    termMap[key] = coefficient;
+                }
+                // console.log(key, termMap);
+
+            }
+
+            // 构建合并后的表达式
+            var result = '';
+            var keys = Object.keys(termMap);
+            for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                var coefficient = termMap[key];
+
+                // 组合变量、指数和系数
+                if (coefficient !== 0) {
+                    if (Math.abs(coefficient) == 1) {
+                        if (key) {
+                            result += (coefficient >= 0 ? '+' : '-') + key;
+                        } else {
+                            result += (coefficient >= 0 ? '+' : '-') + '1';
+                        }
+                    } else {
+                        result += (coefficient >= 0 ? '+' : '-') + Math.abs(coefficient) + key;
+                        //result += coefficient + key;
+                    }
+                }
+            }
+
+            // 移除第一个加号
+            result = result.replace(/^\+/, '');
+
+            return convertExponentsToHTML(result);
+        }
+
+        function convertExponentsToHTML(expression) {
+            var exponentRegex = /\^(\d+)/g;
+            var htmlExpression = expression.replace(exponentRegex, '<sup>$1</sup>');
+            return htmlExpression;
+        }
+
+
+        // 根据当前步骤生成对应的提示和操作
+        function generateStep() {
+            if (currentStep === 0) {
+                step.innerHTML = '1. 是否需要先分成不同的组？';
+                result.innerHTML = '';
+            } else if (currentStep === 1) {
+                step.innerHTML = '2. 是否可以提取公因式？';
+            } else if (currentStep === 2) {
+                step.innerHTML = '3. 是否可以继续提取公因式？';
+            } else {
+                step.innerHTML = '完成因式分解';
+            }
+        }
+
+        // 进入下一步
+        function nextStep() {
+            if (currentStep === 0) {
+                // 用户选择了分组操作
+                // 可以在这里根据具体的步骤和操作逻辑进行处理
+                // 并更新question和currentStep
+            } else if (currentStep === 1) {
+                // 用户选择了提取公因式操作
+                // 可以在这里根据具体的步骤和操作逻辑进行处理
+                // 并更新question和currentStep
+            } else if (currentStep === 2) {
+                // 用户选择了继续提取公因式操作
+                // 可以在这里根据具体的步骤和操作逻辑进行处理
+                // 并更新question和currentStep
+            } else {
+                // 完成因式分解
+                result.innerHTML = '因式分解结果：' + polynomial;
+                document.getElementsByClassName('button')[0].disabled = true;
+            }
+
+            generateStep();
+        }
+
+        // 初始化
+        function initialize() {
+            polynomial = generatePolynomial();
+            question.innerHTML = '请对以下多项式进行因式分解：' + polynomial;
+            currentStep = 0;
+            generateStep();
+        }
+
+        initialize();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>平面几何图形绘制</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    #canvas {
+      border: 1px solid black;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .color-option {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      cursor: pointer;
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <h1>平面几何图形绘制</h1>
+  <div class="control-panel" style="position: absolute; z-index: 10; left: 10px; top:60px;">
+    <div class="color-selector">
+      <label for="color">选择颜色：</label>
+      <select id="color">
+        <option value="black">黑色</option>
+        <option value="red">红色</option>
+        <option value="green">绿色</option>
+        <option value="blue">蓝色</option>
+        <option value="yellow">黄色</option>
+        <option value="orange">橙色</option>
+        <option value="purple">紫色</option>
+        <option value="pink">粉色</option>
+        <option value="cyan">青色</option>
+        <option value="brown">棕色</option>
+      </select>
+      <div id="color-options"></div>
+    </div>
+    <div><input id="node-text-input"></div>
+  </div>
+
+  <canvas id="canvas"></canvas>
+
+
+  <script src="draw.js"></script>
+</body>
+</html>
