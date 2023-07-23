@@ -8,7 +8,7 @@ canvas.height = window.innerHeight;
 const explosions = []; // 存储爆炸效果的数组
 // 玩家和目标的初始位置
 const bullets = [];
-let playerLv = 2;
+let playerLv = 1;
 
 const compassCenterX = canvas.width / 2;
 const compassCenterY = canvas.height;
@@ -199,7 +199,6 @@ class Player {
     if (this.x <= 0 || this.x >= canvas.width) {
       windDirection *= -1;
       windSpeed = Math.round(Math.random()*4)+2;
-      this.x += windSpeed * windDirection;
     }
   }
   // 被击中死亡
