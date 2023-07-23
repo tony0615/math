@@ -9,13 +9,7 @@ const explosions = []; // 存储爆炸效果的数组
 // 玩家和目标的初始位置
 const bullets = [];
 let playerLv = 2;
-let target = null;
-const targetImg = new Image();
-targetImg.src = 'player1.png';
-targetImg.onload = () => {
-  target = new Player(ctx, canvas.width / 2, 50, targetImg);
-}
-// 仪表盘中心位置
+
 const compassCenterX = canvas.width / 2;
 const compassCenterY = canvas.height;
 
@@ -165,8 +159,7 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-// 启动游戏循环
-gameLoop();
+
 
 // 绘制圆形图片
 function drawCircularImage(image, x, y, radius) {
@@ -419,3 +412,15 @@ class Explosion {
     });
   }
 }
+
+
+let target = new Player(ctx, canvas.width / 2, 50, null);
+const targetImg = new Image();
+targetImg.src = 'player1.png';
+targetImg.onload = () => {
+  target = new Player(ctx, canvas.width / 2, 50, targetImg);
+}
+// 仪表盘中心位置
+
+// 启动游戏循环
+gameLoop();
