@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150">
+  <!-- 外框 -->
+  <rect x="10" y="10" width="180" height="130" rx="15" ry="15" fill="#f2f2f2" stroke="#4CAF50" stroke-width="5"/>
+  
+  <!-- 圆角邮票装饰 -->
+  <circle cx="20" cy="20" r="5" fill="#4CAF50"/>
+  <circle cx="180" cy="20" r="5" fill="#4CAF50"/>
+  <circle cx="20" cy="130" r="5" fill="#4CAF50"/>
+  <circle cx="180" cy="130" r="5" fill="#4CAF50"/>
+
+  <!-- “已打卡”文字 -->
+  <text x="50%" y="50%" text-anchor="middle" font-size="30" fill="#4CAF50" dy=".3em">已打卡</text>
+  
+  <!-- 小图标 -->
+  <circle cx="100" cy="100" r="20" fill="#4CAF50"/>
+  <text x="100" y="100" text-anchor="middle" font-size="14" fill="white" dy=".3em">✔</text>
+</svg>
