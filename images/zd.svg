@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.4.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 44 44" style="enable-background:new 0 0 44 44;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st1{fill:none;}
+	.st2{fill-rule:evenodd;clip-rule:evenodd;fill:#3392FF;}
+	.st3{opacity:0.5;fill:#3392FF;enable-background:new    ;}
+</style>
+<g id="图标库" transform="translate(-178.000000, -1302.000000)">
+	<g id="置顶" transform="translate(178.000000, 1302.000000)">
+		<path id="矩形" class="st0" d="M8,0h28c4.4,0,8,3.6,8,8v28c0,4.4-3.6,8-8,8H8c-4.4,0-8-3.6-8-8V8C0,3.6,3.6,0,8,0z"/>
+		<g transform="translate(9.998778, 10.000000)">
+			<rect id="矩形备份-2" x="0" y="0" class="st1" width="24" height="24"/>
+			<g id="编组-6" transform="translate(1.000000, 1.000000)">
+				<path id="形状结合" class="st2" d="M17.7,0.3l4,4c0.4,0.4,0.4,1.1,0,1.6c0,0,0,0,0,0L17,10.5c1.3,3.4,0.6,7.3-2.2,10.1l0,0
+					L1.3,7.1C4,4.4,8,3.7,11.4,4.9l4.7-4.6C16.5-0.1,17.2-0.1,17.7,0.3z"/>
+				<path id="路径-21" class="st3" d="M5.5,13.8l2.6,2.5c0.1,0.1,0.1,0.2,0,0.3c0,0,0,0,0,0l-5.4,3.5c-0.3,0.2-0.8,0.1-1-0.2
+					c-0.2-0.2-0.2-0.5,0-0.8l3.4-5.4C5.3,13.7,5.4,13.7,5.5,13.8C5.5,13.8,5.5,13.8,5.5,13.8z"/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>
