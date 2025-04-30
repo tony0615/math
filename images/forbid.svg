@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.4.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.st0{filter:url(#Adobe_OpacityMaskFilter);}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st2{mask:url(#mask-2_00000181063074745603610360000015030903190369141670_);}
+	.st3{fill:#9B9B9B;}
+</style>
+<g id="图标库" transform="translate(-160.000000, -968.000000)">
+	<g id="封禁管理" transform="translate(160.000000, 968.000000)">
+		<g id="蒙版">
+		</g>
+		<defs>
+			<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="1.7" y="1.7" width="16.7" height="16.7">
+				<feColorMatrix  type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+			</filter>
+		</defs>
+		
+			<mask maskUnits="userSpaceOnUse" x="1.7" y="1.7" width="16.7" height="16.7" id="mask-2_00000181063074745603610360000015030903190369141670_">
+			<g class="st0">
+				<rect id="path-1_00000101825675394790617110000006674271435543106482_" y="0" class="st1" width="20" height="20"/>
+			</g>
+		</mask>
+		<g id="关闭_close-one" class="st2">
+			<g id="形状结合" transform="translate(1.666667, 1.666667)">
+				<path class="st3" d="M8.3,0c4.6,0,8.3,3.7,8.3,8.3s-3.7,8.3-8.3,8.3S0,12.9,0,8.3S3.7,0,8.3,0z M11.7,7.5H5l-0.1,0
+					C4.5,7.6,4.2,7.9,4.2,8.3c0,0.5,0.4,0.8,0.8,0.8l0,0h6.7l0.1,0c0.4-0.1,0.7-0.4,0.7-0.8C12.5,7.9,12.1,7.5,11.7,7.5L11.7,7.5z"
+					/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>

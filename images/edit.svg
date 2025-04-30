@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.4.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.st0{filter:url(#Adobe_OpacityMaskFilter);}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st2{mask:url(#mask-2_00000030484834718809500970000014401128852128103046_);fill:#F66462;}
+	.st3{filter:url(#Adobe_OpacityMaskFilter_00000091007550641684761330000005338331800986081467_);}
+	.st4{mask:url(#mask-2_00000036214416826107471640000001503237708727174035_);fill:#FFA4A4;}
+	.st5{filter:url(#Adobe_OpacityMaskFilter_00000124121523921499653130000016004606156303215498_);}
+	.st6{mask:url(#mask-2_00000139997107987294994650000006495926837690970548_);fill:#FFFFFF;}
+</style>
+<g id="图标库" transform="translate(-37.000000, -968.000000)">
+	<g id="编辑资料" transform="translate(37.000000, 968.000000)">
+		<g id="矩形">
+		</g>
+		<defs>
+			<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="1.5" y="0.6" width="15.1" height="17.6">
+				<feColorMatrix  type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+			</filter>
+		</defs>
+		
+			<mask maskUnits="userSpaceOnUse" x="1.5" y="0.6" width="15.1" height="17.6" id="mask-2_00000030484834718809500970000014401128852128103046_">
+			<g class="st0">
+				<rect id="path-1_00000070823812972941854470000012104358903689161608_" y="0" class="st1" width="20" height="20"/>
+			</g>
+		</mask>
+		<path id="路径" class="st2" d="M8.3,17.8C8,18,7.6,18.1,7.2,18.1H4.3c-1.5,0-2.8-1.3-2.8-2.8V3.4c0-1.6,1.2-2.8,2.8-2.8h9.5
+			c1.5,0,2.8,1.3,2.8,2.8v7c0,0.6-0.3,1.1-0.7,1.5L8.3,17.8z"/>
+		<defs>
+			
+				<filter id="Adobe_OpacityMaskFilter_00000095336653975553757750000013907542962149760154_" filterUnits="userSpaceOnUse" x="10.3" y="12.6" width="8.2" height="7">
+				<feColorMatrix  type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+			</filter>
+		</defs>
+		
+			<mask maskUnits="userSpaceOnUse" x="10.3" y="12.6" width="8.2" height="7" id="mask-2_00000036214416826107471640000001503237708727174035_">
+			<g style="filter:url(#Adobe_OpacityMaskFilter_00000095336653975553757750000013907542962149760154_);">
+				<rect id="path-1_00000080911831116110192570000013205089854149629364_" y="0" class="st1" width="20" height="20"/>
+			</g>
+		</mask>
+		<path id="路径_00000111163895333439252360000000925223462716156308_" class="st4" d="M18.4,14l-0.9-1.2
+			c-0.2-0.3-0.6-0.3-0.9-0.1L11.2,17c-0.1,0.1-0.1,0.1-0.2,0.2l-0.7,1.5c-0.1,0.2-0.1,0.5,0.1,0.7c0.1,0.2,0.4,0.3,0.6,0.2l1.7-0.4
+			c0.1,0,0.2-0.1,0.3-0.1l5.3-4.2c0.1-0.1,0.2-0.3,0.2-0.4C18.5,14.3,18.5,14.2,18.4,14L18.4,14z"/>
+		<defs>
+			
+				<filter id="Adobe_OpacityMaskFilter_00000083069444298277502080000008576241478165448376_" filterUnits="userSpaceOnUse" x="5.4" y="5.1" width="7" height="6.3">
+				<feColorMatrix  type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+			</filter>
+		</defs>
+		
+			<mask maskUnits="userSpaceOnUse" x="5.4" y="5.1" width="7" height="6.3" id="mask-2_00000139997107987294994650000006495926837690970548_">
+			<g style="filter:url(#Adobe_OpacityMaskFilter_00000083069444298277502080000008576241478165448376_);">
+				<rect id="path-1_00000127027784789212888930000000717402399307063968_" y="0" class="st1" width="20" height="20"/>
+			</g>
+		</mask>
+		<path id="形状" class="st6" d="M6.3,6.9C5.8,6.9,5.4,6.5,5.4,6s0.4-0.9,0.9-0.9h5.3c0.5,0,0.9,0.4,0.9,0.9S12,6.9,11.6,6.9H6.3z
+			 M6.3,11.4c-0.5,0-0.9-0.4-0.9-0.9s0.4-0.9,0.9-0.9h5.3c0.5,0,0.9,0.4,0.9,0.9s-0.4,0.9-0.9,0.9H6.3z"/>
+	</g>
+</g>
+</svg>
