@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.4.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.st0{filter:url(#Adobe_OpacityMaskFilter);}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st2{mask:url(#mask-2_00000008827107788448131090000004199127131462931623_);fill:#1A191E;}
+</style>
+<g id="图标库" transform="translate(-245.000000, -895.000000)">
+	<g id="扫一扫" transform="translate(245.000000, 895.000000)">
+		<g id="蒙版">
+		</g>
+		<defs>
+			<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="1.6" y="1.6" width="17" height="17">
+				<feColorMatrix  type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+			</filter>
+		</defs>
+		
+			<mask maskUnits="userSpaceOnUse" x="1.6" y="1.6" width="17" height="17" id="mask-2_00000008827107788448131090000004199127131462931623_">
+			<g class="st0">
+				<rect id="path-1_00000134226345067747532870000008922145514992841367_" y="0" class="st1" width="20" height="20"/>
+			</g>
+		</mask>
+		<path id="形状结合" class="st2" d="M17.8,12.3c0.4,0,0.8,0.4,0.8,0.8l0,0v3.3c0,1.2-1,2.2-2.2,2.2l0,0H3.8
+			c-1.2,0-2.2-1-2.2-2.2l0,0v-3.3c0-0.4,0.4-0.8,0.8-0.8s0.8,0.4,0.8,0.8l0,0v3.3c0,0.4,0.3,0.7,0.7,0.7l0,0h12.6
+			c0.4,0,0.7-0.3,0.7-0.7l0,0v-3.3C17,12.7,17.4,12.3,17.8,12.3z M17.8,9.3c0.4,0,0.8,0.4,0.8,0.8s-0.4,0.8-0.8,0.8l0,0H2.3
+			c-0.4,0-0.8-0.4-0.8-0.8s0.4-0.8,0.8-0.8l0,0H17.8z M16.3,1.6c1.2,0,2.2,1,2.2,2.2l0,0V7c0,0.4-0.4,0.8-0.8,0.8
+			C17.3,7.8,17,7.5,17,7l0,0V3.8c0-0.4-0.3-0.7-0.7-0.7l0,0H3.8c-0.4,0-0.7,0.3-0.7,0.7l0,0V7c0,0.4-0.4,0.8-0.8,0.8S1.6,7.5,1.6,7
+			l0,0V3.8c0-1.2,1-2.2,2.2-2.2l0,0H16.3z"/>
+	</g>
+</g>
+</svg>
